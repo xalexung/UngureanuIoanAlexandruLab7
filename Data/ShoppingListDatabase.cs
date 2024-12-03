@@ -84,5 +84,17 @@ namespace UngureanuIoanAlexandruLab7.Data
             + " on P.ID = LP.ProductID where LP.ShopListID = ?",
             shoplistid);
         }
+
+        public Task<ListProduct> GetListProductAsync(int shopListId, int productId)
+        {
+            return _database.Table<ListProduct>()
+                .Where(lp => lp.ShopListID == shopListId && lp.ProductID == productId)
+                .FirstOrDefaultAsync();
+        }
+        public Task<int> DeleteListProductAsync(ListProduct listProduct)
+        {
+            return _database.DeleteAsync(listProduct);
+        }
+
     }
 }

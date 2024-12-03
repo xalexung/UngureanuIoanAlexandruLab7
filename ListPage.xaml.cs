@@ -43,12 +43,20 @@ public partial class ListPage : ContentPage
         {
             var shopList = (ShopList)this.BindingContext;
 
-            var updatedProducts = (listView.ItemsSource as IEnumerable<Product>).ToList();
-            updatedProducts.Remove(selectedProduct);
+            var listProduct = await App.Database.GetListProductAsync(shopList.ID, selectedProduct.ID);
 
-            listView.ItemsSource = updatedProducts;
+            if (listProduct != null)
+            {
+                await App.Database.DeleteListProductAsync(listProduct);
 
-            await DisplayAlert("Success", $"Product '{selectedProduct.Description}' has been removed.", "OK");
+                listView.ItemsSource = await App.Database.GetListProductsAsync(shopList.ID);
+
+                await DisplayAlert("Success", $"Product '{selectedProduct.Description}' has been removed.", "OK");
+            }
+            else
+            {
+                await DisplayAlert("Error", "The selected product is not linked to this shopping list.", "OK");
+            }
         }
         else
         {

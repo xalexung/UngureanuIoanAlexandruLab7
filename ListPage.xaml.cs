@@ -55,5 +55,5 @@ public partial class ListPage : ContentPage
             await DisplayAlert("Error", "No item selected.", "OK");
         }
     }
-}
+} 
 
